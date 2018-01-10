@@ -7,7 +7,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    </Grid>
+  <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height='Auto'/>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
+    <StackPanel x:Name='StackPanel1'>
+      <Button x:Name='btn1' Click='btn1_Click' FontSize='50' Content='Read or Create Settings'/>
+      <Button x:Name='btn2' Click='btn2_Click' FontSize='50' Content='Update Settings'/>
+      <Button x:Name='btn3' Click='btn3_Click' FontSize='50' Content='Create SQLite DB'/>
+      <Button x:Name='btn4' Click='btn4_Click' FontSize='50' Content='Read SQLite DB'/>
+    </StackPanel>
+    <TextBox x:Name='Result' Grid.Row='1' IsReadOnly='False' Text='Starter text' FontSize='100' TextWrapping='Wrap'/>
+  </Grid>
 </Page>
