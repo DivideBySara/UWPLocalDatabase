@@ -18,7 +18,29 @@ namespace UWPLocalDatabase
     /// </summary>
     public sealed partial class MainPage : Page
     {
-       
+        public static Plant[] garden = new Plant[]
+        {
+            new Plant()
+            {
+                Id = "0",
+                Name = "Spinach",
+                Category = "Greens"
+            },
+
+            new Plant()
+            {
+                Id = "1",
+                Name = "Bell Pepper",
+                Category = "Fruit"
+            },
+
+            new Plant()
+            {
+                Id = "2",
+                Name = "Carrots",
+                Category = "Root"
+            }
+        };
         public MainPage()
         {
             this.InitializeComponent();
@@ -105,17 +127,25 @@ namespace UWPLocalDatabase
         {
             using (SQLiteConnection conn = await OpenOrRecreateConnectionAsync(true))
             {
-                conn.CreateTable<Garden>();
-                foreach (var plant in Garden.garden)
+                conn.CreateTable<Plant>();
+                foreach (var plant in garden)
                 {
                     conn.InsertOrReplace(plant);
                 }
             }
         }
 
-        private void btn4_Click(object sender, RoutedEventArgs e)
+        private async void btn4_Click(object sender, RoutedEventArgs e)
         {
+            using (var conn = await OpenOrRecreateConnectionAsync() )
+            {
+                var garden = from p in conn.Table<Plant>()
+                            select p;
 
+                var plantNames = string.Join(", ", garden.Select(plant => plant.Name));
+
+                Result.Text = plantNames;
+            }
         }
     }// End partial class MainPage
     public class Setting
@@ -123,34 +153,7 @@ namespace UWPLocalDatabase
         public string Name { get; set; }
         public string Value { get; set; }
     }
-
-    public class Garden
-    {
-        public static Plant[] garden = new Plant[]
-        {
-            new Plant()
-            {
-                Id = "0",
-                Name = "Spinach",
-                Category = "Greens"
-            },
-
-            new Plant()
-            {
-                Id = "1",
-                Name = "Bell Pepper",
-                Category = "Fruit"
-            },
-
-            new Plant()
-            {
-                Id = "2",
-                Name = "Carrots",
-                Category = "Root"
-            }
-        };
-    }
-
+ 
     public class Plant
     {
         [PrimaryKey]
